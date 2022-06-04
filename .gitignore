@@ -53,4 +53,6 @@ go.work
 # Ignore code-workspaces
 *.code-workspace
 
+
+.vscode/settings.json
 # End of https://www.toptal.com/developers/gitignore/api/go,visualstudiocode

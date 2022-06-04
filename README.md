@@ -108,7 +108,7 @@ Operation with containers dockers:
 * create db without enter to the container: `docker exec -it <name or hash> createdb --username=root --owner=root name_db`
 For example: `docker exec -it postgres12 createdb --username=root --owner=root simple_bank`
 
-## Golang migrate
+## Golang migration
 
 In this part we watch how to create a migration file and run it.
 
@@ -119,7 +119,45 @@ CLI: https://github.com/golang-migrate/migrate
 
 ## sqlc
 
+This a CLI for make easy creation of models and manipulate with simple SQL for data manipulation.
+
 url: https://docs.sqlc.dev/en/stable/tutorials/getting-started-postgresql.html
+
+1. Install the CLI: `brew install sqlc`
+2. Test if the cli was installed: `sqlc version`
+3. Inits the sqlc configuration file: `sqlc init` this generate a empty configuration file. Then copy and paste this config:
+
+```yml
+version: 1
+packages:
+  - path: "./db/sqlc"
+    name: "db"
+    engine: "postgresql"
+    schema: "./db/migrations/"
+    queries: "./db/query/"
+    emit_json_tags: true
+    emit_prepared_queries: false
+    emit_interface: false
+    emit_exact_table_names: false
+```
+
+* path: indicate that where the cli generate the code
+* name: package name
+* engine: the database engine, in this case `postgresql`
+* schema: the folder where is the schema of the database for generate the `models.go`
+* queries: the folder where is at minimun one query. we have to specified the action and query like this:
+
+```sql
+-- name: GetAuthor :one // many or exec
+SELECT * FROM authors
+WHERE id = $1 LIMIT 1;
+```
+
+4. Generate code with the CLI: `sqlc generate` this create the followings files:
+* `db.go` 
+* `<model>.sql.go` for example `account.sql.go`
+* `models.go` from the schema create structs.
+
 
 # Test
 
