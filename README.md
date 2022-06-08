@@ -19,7 +19,7 @@ Table entries {
   id bigserial [pk]
   account_id bigint [ref: > A.id, not null]
   amount bigint [not null, note: 'can be negative or positive']
-  created_at timestamptz [default: `now()`]
+  created_at timestamptz [not null, default: `now()`]
   
   Indexes { 
     account_id
@@ -56,7 +56,7 @@ CREATE TABLE "entries" (
   "id" bigserial PRIMARY KEY,
   "account_id" bigint NOT NULL,
   "amount" bigint NOT NULL,
-  "created_at" timestamptz DEFAULT (now())
+  "created_at" timestamptz NOT NULL DEFAULT (now())
 );
 
 CREATE TABLE "transfers" (
@@ -86,6 +86,7 @@ ALTER TABLE "entries" ADD FOREIGN KEY ("account_id") REFERENCES "accounts" ("id"
 ALTER TABLE "transfers" ADD FOREIGN KEY ("from_account_id") REFERENCES "accounts" ("id");
 
 ALTER TABLE "transfers" ADD FOREIGN KEY ("to_account_id") REFERENCES "accounts" ("id");
+
 ```
 
 
@@ -145,7 +146,7 @@ packages:
 * name: package name
 * engine: the database engine, in this case `postgresql`
 * schema: the folder where is the schema of the database for generate the `models.go`
-* queries: the folder where is at minimun one query. we have to specified the action and query like this:
+* queries: the folder where is at minimum one query. we have to specified the action and query like this:
 
 ```sql
 -- name: GetAuthor :one // many or exec
