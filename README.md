@@ -163,3 +163,25 @@ WHERE id = $1 LIMIT 1;
 # Test
 
 use this lib: https://github.com/stretchr/testify
+
+# Popular web frameworks
+
+- Gin https://gin-gonic.com/ ✅
+- Beego https://beego.vip/ ✅
+- Echo https://echo.labstack.com/ ✅
+- Revel https://revel.github.io/ ✅
+- Martini https://github.com/go-martini/martini ⚠️ (No longer maintained)
+- Fiber https://docs.gofiber.io/ ✅
+- Buffalo https://gobuffalo.io/ ✅
+
+# Popular HTTP routers
+
+- FastHttp https://github.com/valyala/fasthttp ✅
+- Gorilla Mux https://github.com/gorilla/mux ⚠️ [(Looking for a New Maintainer)](https://github.com/gorilla/mux/issues/659)
+- HttpRouter https://github.com/julienschmidt/httprouter ✅
+- Chi https://github.com/go-chi/chi ✅
+
+# Gin
+
+1. Install `go get -u github.com/gin-gonic/gin``
+
