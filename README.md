@@ -185,3 +185,38 @@ use this lib: https://github.com/stretchr/testify
 
 1. Install `go get -u github.com/gin-gonic/gin``
 
+# GOMOCK
+
+## Install
+
+We use the CLI por generate the mock file
+
+1. Go to https://github.com/golang/mock for review the new form of install, at this moment is executing this: `go install github.com/golang/mock/mockgen@v1.6.0`
+2. Generate the mock: `mockgen -package mockdb -destination db/mock/store.go github.com/wlensinas/backend_master_class/db/sqlc Store`
+
+If you execute one test function and need to watch the verbouse output:
+1. Edit Preferences: command+p
+2. Enter `> Preferences: Open Settings (JSON)`
+3. Add this line `"go.testFlags": ["-v"]`
+4. Save it
+
+Executes again and them you have this kind of output:
+
+```bash
+Running tool: /usr/local/bin/go test -timeout 30s -run ^TestGetAccountAPI$ github.com/wlensinas/backend_master_class/api -v
+
+=== RUN   TestGetAccountAPI
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] POST   /accounts                 --> github.com/wlensinas/backend_master_class/api.(*Server).createAccount-fm (3 handlers)
+[GIN-debug] GET    /accounts/:id             --> github.com/wlensinas/backend_master_class/api.(*Server).getAccount-fm (3 handlers)
+[GIN-debug] GET    /accounts                 --> github.com/wlensinas/backend_master_class/api.(*Server).ListAccounts-fm (3 handlers)
+[GIN] 2022/06/13 - 15:17:00 | 200 |     250.307µs |                 | GET      "/accounts/27"
+--- PASS: TestGetAccountAPI (0.00s)
+PASS
+ok  	github.com/wlensinas/backend_master_class/api	0.651s
+```
