@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/lib/pq"
 	db "github.com/wlensinas/backend_master_class/db/sqlc"
+	"github.com/wlensinas/backend_master_class/token"
 	"github.com/wlensinas/backend_master_class/util"
 )
 
@@ -77,8 +78,9 @@ type loginUserRequest struct {
 }
 
 type loginUserResponse struct {
-	AccessToken string       `json:"access_token"`
-	User        userResponse `json:"user"`
+	AccessToken string        `json:"access_token"`
+	Payload     token.Payload `json:"payload"`
+	User        userResponse  `json:"user"`
 }
 
 func (server *Server) loginUser(ctx *gin.Context) {
@@ -103,7 +105,7 @@ func (server *Server) loginUser(ctx *gin.Context) {
 		ctx.JSON(http.StatusUnauthorized, errorResponse(err))
 		return
 	}
-	accessToken, err := server.tokenMaker.CreateToken(
+	accessToken, payload, err := server.tokenMaker.CreateToken(
 		user.Username,
 		server.config.AccessTokenDuration,
 	)
@@ -113,6 +115,7 @@ func (server *Server) loginUser(ctx *gin.Context) {
 	}
 	rsp := loginUserResponse{
 		AccessToken: accessToken,
+		Payload:     *payload,
 		User:        newUserResponse(user),
 	}
 	ctx.JSON(http.StatusOK, rsp)
