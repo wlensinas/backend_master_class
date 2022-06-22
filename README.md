@@ -89,26 +89,6 @@ ALTER TABLE "transfers" ADD FOREIGN KEY ("to_account_id") REFERENCES "accounts" 
 
 ```
 
-
-## Docker
-
-1. Pull postgresql image `docker pull postgres:12-alpine`
-2. List images: `docker images`
-3. Run docker image: `docker run --name postgres12 -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:12-alpine`
-4. Connect to the container: `docker exec -it postgres12 psql -U root`
-5. Execute some select for testing porpouse: `select now();` and then quit `\q`
-
-Tips:
-* delete images with ´none´ in the name: `docker rmi $(docker images | tail -n +2 | awk '$1 == "<none>" {print $'3'}')`
-
-Operation with containers dockers:
-* stop container: `docker stop <name or hash>` in this case `docker stop postgres12`
-* list containers actives and stopped: `docker ps -a`
-* start the container: `docker start <name or hash>`
-* enter to the container terminal: `docker exec -it <name or hash> /bin/sh`
-* create db without enter to the container: `docker exec -it <name or hash> createdb --username=root --owner=root name_db`
-For example: `docker exec -it postgres12 createdb --username=root --owner=root simple_bank`
-
 ## Golang migration
 
 In this part we watch how to create a migration file and run it.
@@ -220,3 +200,44 @@ Running tool: /usr/local/bin/go test -timeout 30s -run ^TestGetAccountAPI$ githu
 PASS
 ok  	github.com/wlensinas/backend_master_class/api	0.651s
 ```
+
+# Docker
+
+## Commands
+
+1. Pull postgresql image `docker pull postgres:12-alpine`
+2. List images: `docker images`
+3. Run docker image: `docker run --name postgres12 -p 5432:5432 -e POSTGRES_USER=root -e POSTGRES_PASSWORD=secret -d postgres:12-alpine`
+4. Connect to the container: `docker exec -it postgres12 psql -U root`
+5. Execute some select for testing porpouse: `select now();` and then quit `\q`
+
+Tips:
+* delete images with ´none´ in the name: `docker rmi $(docker images | tail -n +2 | awk '$1 == "<none>" {print $'3'}')`
+* Inspect container postgres12: `docker container inspect postgres12`
+* Inspect container app: `docker container inspect simplebank`
+
+Operation with containers dockers:
+* stop container: `docker stop <name or hash>` in this case `docker stop postgres12`
+* list containers actives and stopped: `docker ps -a`
+* start the container: `docker start <name or hash>`
+* enter to the container terminal: `docker exec -it <name or hash> /bin/sh`
+* create db without enter to the container: `docker exec -it <name or hash> createdb --username=root --owner=root name_db`
+For example: `docker exec -it postgres12 createdb --username=root --owner=root simple_bank`
+
+## For development in docker
+
+1. Create network: `docker network create bank-network`
+2. Connect postgres12 container to the network: `docker network connect bank-network postgres12`
+3. Build the image for the app: `docker build -t simplebank:latest .`
+
+* Execute the app for development: `docker run --name simplebank --network bank-network -p 8080:8080 -e DB_SOURCE="postgresql://root:secret@postgres12:5432/simple_bank?sslmode=disable" simplebank:latest`
+* Execute the app for test production: `docker run --name simplebank --network bank-network -p 8080:8080 -e GIN_MODE=release -e DB_SOURCE="postgresql://root:secret@postgres12:5432/simple_bank?sslmode=disable" simplebank:latest`
+
+# Wait-for
+
+https://github.com/eficode/wait-for
+
+
+# Random commands
+
+create a string with 32 characters random style: `openssl rand -hex 64 | head -c 32`
