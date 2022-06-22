@@ -236,3 +236,8 @@ For example: `docker exec -it postgres12 createdb --username=root --owner=root s
 # Wait-for
 
 https://github.com/eficode/wait-for
+
+
+# Random commands
+
+create a string with 32 characters random style: `openssl rand -hex 64 | head -c 32`
