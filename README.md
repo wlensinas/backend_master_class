@@ -96,7 +96,7 @@ In this part we watch how to create a migration file and run it.
 CLI: https://github.com/golang-migrate/migrate
 
 1. Install with brew on macos: `brew install golang-migrate`
-2. create migrations: `migrate create -ext sql -dir db/migrations -seq init_schema`
+2. create migrations: `migrate create -ext sql -dir db/migrations -seq <migration_name>`
 
 ## sqlc
 
