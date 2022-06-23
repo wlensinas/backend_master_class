@@ -265,3 +265,33 @@ macOS:
 
 create a string with 32 characters random style: `openssl rand -hex 64 | head -c 32`
 
+## gRPC Gateway
+
+Source: https://github.com/grpc-ecosystem/grpc-gateway
+
+### install
+
+1. Generate a file with:
+
+```go
+// +build tools
+
+package tools
+
+import (
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway"
+	_ "github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2"
+	_ "google.golang.org/grpc/cmd/protoc-gen-go-grpc"
+	_ "google.golang.org/protobuf/cmd/protoc-gen-go"
+)
+```
+2. Execute `go mod tidy`
+3. Install binaries:
+
+```bash
+go install \
+    github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway \
+    github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2 \
+    google.golang.org/protobuf/cmd/protoc-gen-go \
+    google.golang.org/grpc/cmd/protoc-gen-go-grpc
+```
